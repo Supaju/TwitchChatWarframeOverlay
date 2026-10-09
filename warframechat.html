@@ -83,8 +83,9 @@ function classColor(name) {
 }
 
 // Per-user name colors set via the chat command; kept in OBS's browser storage so they survive restarts.
+// All local-file Browser Sources share one storage, so the key is unique to this overlay (the WoW/Phasmo overlays use "nameColors").
 let custom = {};
-try { custom = JSON.parse(localStorage.getItem("nameColors") || "{}"); } catch {}
+try { custom = JSON.parse(localStorage.getItem("warframeNameColors") || "{}"); } catch {}
 
 // !colors: one line naming every damage type in its own color, with a cooldown so it can't flood the overlay.
 let colorsShownAt = -Infinity;
@@ -109,7 +110,7 @@ function colorCommand(login, text) {
   if (/^#[0-9a-f]{6}$/.test(arg)) custom[login] = arg;
   else if (cls) custom[login] = cls[1];
   else if (arg === "reset") delete custom[login];
-  try { localStorage.setItem("nameColors", JSON.stringify(custom)); } catch {}
+  try { localStorage.setItem("warframeNameColors", JSON.stringify(custom)); } catch {}
   return true;                     // command lines are never shown, valid or not
 }
 
